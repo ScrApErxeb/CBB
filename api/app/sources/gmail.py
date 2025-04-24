@@ -52,22 +52,44 @@ def get_gmail_service():
 
 
 
+from datetime import datetime
+from app.db.session import SessionLocal
+from app.db.models import Email
 
 def fetch_recent_emails(max_results=5):
     service = get_gmail_service()
+    db = SessionLocal()
 
     # 📩 Liste des messages
     results = service.users().messages().list(userId='me', maxResults=max_results).execute()
     messages = results.get('messages', [])
 
-    emails = []
+    new_emails = []
     for msg in messages:
-        msg_data = service.users().messages().get(userId='me', id=msg['id']).execute()
-        snippet = msg_data.get('snippet')
-        if snippet:
-            emails.append(snippet)
+        msg_id = msg['id']
 
-    return emails
+        # 🔎 Vérifie si ce mail existe déjà dans la base
+        if db.query(Email).filter(Email.id == msg_id).first():
+            continue
+
+        msg_data = service.users().messages().get(userId='me', id=msg_id).execute()
+        snippet = msg_data.get('snippet')
+        internal_date = int(msg_data.get('internalDate', 0)) / 1000  # Gmail timestamp
+
+        if snippet:
+            email = Email(
+                id=msg_id,
+                snippet=snippet,
+                internal_date=datetime.fromtimestamp(internal_date)
+            )
+            db.add(email)
+            new_emails.append(snippet)
+
+    db.commit()
+    db.close()
+
+    return new_emails
+
 
 
 if __name__ == "__main__":

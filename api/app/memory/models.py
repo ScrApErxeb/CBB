@@ -11,7 +11,7 @@ class Memory(Base):
     content = Column(Text, nullable=False)
     tags = Column(String, nullable=True)
     source = Column(String, nullable=True)
-    timestamp = Column(DateTime, default=datetime.utcnow())
+    timestamp = Column(DateTime, default=datetime.now())
     source = Column(String, nullable=False, default="manual")  # Enum pas obligatoire en DB
     user_id = Column(Integer, ForeignKey("users.id"))  # 👈 CLE ETRANGERE
 

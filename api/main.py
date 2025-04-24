@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.auth.routes import router as auth_router
 from app.memory.routes import router as memory_router  # Ou via __init__.py si tu préfères from app.memory import memory_router
+from app.db.session import engine
+from app.db.models import Base
 
 app = FastAPI(
     title="IA Perso API",
@@ -23,6 +25,10 @@ app.add_middleware(
 app.include_router(auth_router, prefix="/auth", tags=["Auth"])
 app.include_router(memory_router, prefix="", tags=["Memory"])  # Les routes sont déjà définies avec /memories/ dedans
 
-
 from app.sources.routes import router as sources_router
 app.include_router(sources_router, prefix="/sources", tags=["Sources"])
+
+# 📦 Créer les tables à chaque démarrage
+Base.metadata.create_all(bind=engine)
+
+print("✅ Tables créées.")
