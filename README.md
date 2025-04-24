@@ -17,14 +17,14 @@ Stocke ta mémoire, retrouve des souvenirs, et prépare-toi à vivre avec ton as
 
 ## 🏗️ Stack technique
 
-| Techno       | Rôle                        |
-|--------------|-----------------------------|
-| FastAPI      | Framework d'API Python      |
-| PostgreSQL   | Base de données relationnelle |
-| Docker       | Conteneurisation            |
-| Qdrant       | (à venir) Mémoire vectorielle |
-| SQLAlchemy   | ORM Python                  |
-| Postman      | Test de l’API               |
+| Techno     | Rôle                          |
+| ---------- | ----------------------------- |
+| FastAPI    | Framework d'API Python        |
+| PostgreSQL | Base de données relationnelle |
+| Docker     | Conteneurisation              |
+| Qdrant     | (à venir) Mémoire vectorielle |
+| SQLAlchemy | ORM Python                    |
+| Postman    | Test de l’API                 |
 
 ---
 
@@ -35,3 +35,4 @@ Stocke ta mémoire, retrouve des souvenirs, et prépare-toi à vivre avec ton as
 ```bash
 git clone https://github.com/ScrApErxeb/CBB.git
 cd CBB
+```
