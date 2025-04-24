@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+psycopg2-binary
+qdrant-client
+sqlalchemy
+pydantic
+passlib[bcrypt]
+pydantic[email]
+python-jose[cryptography]
+google-api-python-client
+google-auth
+google-auth-oauthlib

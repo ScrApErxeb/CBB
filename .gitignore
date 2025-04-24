@@ -1,0 +1,10 @@
+# .gitignore
+__pycache__/
+*.pyc
+*.sqlite3
+.env
+venv/
+postgres_data/
+qdrant_data/
+api/app/credentials/token.json
+api/app/credentials/credentials.json
