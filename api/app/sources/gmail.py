@@ -49,6 +49,34 @@ def get_gmail_service():
     return build('gmail', 'v1', credentials=creds)
 
 
+def fetch_single_email():
+    try:
+        service = get_gmail_service()
+        # On récupère les 1er email (limité à 1 pour le test)
+        results = service.users().messages().list(userId='me', maxResults=1).execute()
+        messages = results.get('messages', [])
+
+        if not messages:
+            print('Aucun email trouvé.')
+            return None, None
+
+        msg_id = messages[0]['id']
+        msg = service.users().messages().get(userId='me', id=msg_id).execute()
+        
+        snippet = msg['snippet']  # Aperçu du contenu du message
+        # Recherche de l'expéditeur dans les en-têtes
+        headers = msg['payload']['headers']
+        sender = next(header['value'] for header in headers if header['name'] == 'From')
+        
+        return snippet, sender
+
+    except Exception as error:
+        print(f"Une erreur est survenue: {error}")
+        return None, None
+
+# Récupérer un email pour test
+fetch_single_email()
+
 def fetch_recent_emails(max_results=5):
     service = get_gmail_service()
     db = SessionLocal()

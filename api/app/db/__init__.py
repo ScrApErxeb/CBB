@@ -26,4 +26,3 @@ Base = declarative_base()
 def init_db():
     from app.db.models import Base  # Import ici pour éviter les imports circulaires
     Base.metadata.create_all(bind=engine)
-    print("✅ Tables créées.")
