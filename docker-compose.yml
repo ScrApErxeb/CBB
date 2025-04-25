@@ -9,9 +9,14 @@ services:
       - ./api:/app
     working_dir: /app
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    environment:
+      DATABASE_URL: postgresql://user:password@db:5432/ia_db
+      QDRANT_URL: http://qdrant:6333
+      QDRANT_RECREATE : true
     depends_on:
       - qdrant
       - db
+
 
   db:
     image: postgres:15

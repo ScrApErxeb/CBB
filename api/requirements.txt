@@ -1,12 +1,33 @@
+# Core API
 fastapi
 uvicorn[standard]
+
+# Database
 psycopg2-binary
-qdrant-client
 sqlalchemy
-pydantic
+alembic
+
+# Auth
 passlib[bcrypt]
-pydantic[email]
+bcrypt==4.0.1  # Version spécifique pour éviter les problèmes de compatibilité
 python-jose[cryptography]
+
+# Pydantic
+pydantic
+pydantic[email]  # Optionnel depuis v2, à vérifier selon ton usage
+
+# AI / NLP
+sentence-transformers
+hf_xet  # Hugging Face Extension Tokenizer (si utilisé dans ton embedding)
+
+# Vector DB
+qdrant-client
+
+# Google API (Gmail)
 google-api-python-client
 google-auth
 google-auth-oauthlib
+
+# Tests
+pytest
+pytest-asyncio

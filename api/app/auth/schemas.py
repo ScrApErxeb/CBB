@@ -13,8 +13,9 @@ class UserOut(BaseModel):
     email: EmailStr
     username: str
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True  # ✅ remplace orm_mode
+    }
 
 class UserLogin(BaseModel):
     email: EmailStr
@@ -42,5 +43,7 @@ class MemoryOut(MemoryCreate):
     id: int
     timestamp: datetime
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True  # ✅ remplace orm_mode
+    }
+    
