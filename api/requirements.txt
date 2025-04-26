@@ -31,3 +31,7 @@ google-auth-oauthlib
 # Tests
 pytest
 pytest-asyncio
+
+
+# Documentation
+mammoth  # Pour la conversion de fichiers .docx en texte brut

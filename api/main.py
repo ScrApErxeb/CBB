@@ -28,3 +28,8 @@ app.include_router(sources_router, prefix="/sources", tags=["Sources"])
 
 # Init DB
 init_db()
+
+
+from app.vector.qdrant_utils import init_qdrant_collections
+
+init_qdrant_collections()

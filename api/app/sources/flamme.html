@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Uploader un fichier</title>
+</head>
+<body>
+
+<input type="file" id="fileInput">
+<button onclick="upload()">Envoyer</button>
+
+<script>
+async function upload() {
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0];
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('user_id', '1');
+
+    const response = await fetch('http://localhost:8000/sources/upload', {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzQ1Njg5MTc4fQ.bMQZIGBBFyLS4rzKnB2Qo6dmSsxW9SACxRH5WBuOzz8'
+        },
+        body: formData
+    });
+
+    const data = await response.json();
+    console.log(data);
+}
+</script>
+
+</body>
+</html>
