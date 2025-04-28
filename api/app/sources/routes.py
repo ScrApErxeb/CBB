@@ -1,5 +1,5 @@
 # app/routes/sources_routes.py
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query, UploadFile, File, Form, HTTPException
 from app.sources.gmail import fetch_recent_emails, fetch_all_emails, fetch_single_email
 from app.auth.dependencies import get_current_user
 
@@ -70,3 +70,37 @@ def upload_local_file(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
+
+
+from fastapi import Depends
+from sqlalchemy.orm import Session
+from app.db.deps import get_db
+from app.auth.dependencies import get_current_user  # Si tu as de l'auth
+from app.db.crud_search import save_search
+from app.vector.qdrant_utils import upsert_search_results
+from app.models.user import User
+from app.sources.internet.ddg import ddg_search
+from app.sources.internet.schemas import SearchResponse
+
+@router.get("/search/ddg", response_model=SearchResponse)
+async def search_ddg(
+    query: str = Query(..., description="Terme à rechercher sur DuckDuckGo"),
+    max_results: int = Query(10, ge=1, le=50, description="Nombre maximum de résultats"),
+    region: str = Query('fr-fr', description="Région pour la recherche (ex: 'fr-fr', 'us-en')"),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Rechercher sur DuckDuckGo, sauvegarder la recherche, et stocker les résultats dans Qdrant.
+    """
+    # 1. Sauvegarder la recherche dans PostgreSQL
+    search = save_search(db, user_id=current_user.id, query=query)
+
+    # 2. Rechercher sur DuckDuckGo
+    results = ddg_search(query, region=region, max_results=max_results)
+
+    # 3. Sauvegarder les résultats dans Qdrant
+    upsert_search_results(search_id=search.id, results=results)
+
+    return {"query": query, "results": results}

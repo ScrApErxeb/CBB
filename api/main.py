@@ -1,7 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 from init_db import init_db  # ta fonction que tu créeras
 
+from app.sources.routes import router as internet_router
 from app.auth.routes import router as auth_router
 from app.memory.routes import router as memory_router
 from app.sources.routes import router as sources_router
@@ -25,6 +26,8 @@ app.add_middleware(
 app.include_router(auth_router, prefix="/auth", tags=["Auth"])
 app.include_router(memory_router, prefix="", tags=["Memory"])
 app.include_router(sources_router, prefix="/sources", tags=["Sources"])
+app.include_router(internet_router, prefix="/sources", tags=["Sources Internet"])
+
 
 # Init DB
 init_db()
@@ -33,3 +36,4 @@ init_db()
 from app.vector.qdrant_utils import init_qdrant_collections
 
 init_qdrant_collections()
+

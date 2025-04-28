@@ -1,6 +1,5 @@
-# app/auth/schemas.py
-
 from pydantic import BaseModel, EmailStr
+from uuid import UUID
 from typing import Optional
 
 class UserCreate(BaseModel):
@@ -9,7 +8,7 @@ class UserCreate(BaseModel):
     password: str
 
 class UserOut(BaseModel):
-    id: int
+    id: UUID  # Changer 'int' en 'UUID'
     email: EmailStr
     username: str
 
@@ -29,9 +28,7 @@ class UpdateUser(BaseModel):
     email: Optional[EmailStr] = None
     username: Optional[str] = None
 
-
-
-
+# Schema pour Memory
 from datetime import datetime
 
 class MemoryCreate(BaseModel):
@@ -40,10 +37,9 @@ class MemoryCreate(BaseModel):
     source: Optional[str] = "manual"
 
 class MemoryOut(MemoryCreate):
-    id: int
+    id: UUID  # Utilise UUID ici aussi
     timestamp: datetime
 
     model_config = {
         "from_attributes": True  # ✅ remplace orm_mode
     }
-    

@@ -1,5 +1,6 @@
 from db.session import engine
-from db.models import Base
+from models.base import Base
+import app.models  # <-- nécessaire pour tout charger
 
 if __name__ == "__main__":
     print("📦 Création des tables...")

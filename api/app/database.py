@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker
 Base = declarative_base()
 
 # Configuration de la DB
-SQLALCHEMY_DATABASE_URL = "postgresql://user:password@db:5432/ia_db"
+SQLALCHEMY_DATABASE_URL = "postgresql://user:password@localhost:5432/ia_db"
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

@@ -1,10 +1,8 @@
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.ext.declarative import declarative_base
+from app.db.session import Base
 import uuid
 from datetime import datetime
-
-Base = declarative_base()
 
 class LocalDocument(Base):
     __tablename__ = "local_documents"

@@ -3,10 +3,11 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app.memory import schemas, models
+from app.memory import schemas
+from app.models import memory as models
 from app.auth.dependencies import get_current_user
 from app.models import User
-
+ 
 router = APIRouter()
 
 @router.post("/memories/", response_model=schemas.MemoryOut)

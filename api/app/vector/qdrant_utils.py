@@ -68,14 +68,57 @@ def upsert_local_document(user_id: str, text: str, filename: str):
     )
 
 
+from qdrant_client.models import PointStruct
+import numpy as np
+
+
+from app.vector.embedding import get_embedding
+
+def upsert_search_results(search_id: int, results: list):
+    points = []
+    
+    for result in results:
+        title = result.get('title')
+        description = result.get('description')
+        
+        if not title or not description:
+            continue  # Ne pas traiter si manque title/description
+        
+        # Création du texte complet pour embedding
+        text_to_embed = f"{title}\n{description}"
+        vector = get_embedding(text_to_embed)  # 🚀 Vrai embedding ici !
+
+        # Générer un UUID valide pour chaque point
+        point_id = uuid.uuid5(uuid.NAMESPACE_DNS, f"{search_id}_{title}")
+
+        # Ajouter le point
+        points.append(PointStruct(
+            id=str(point_id),  # Utiliser UUID valide
+            vector=vector,
+            payload={
+                'search_id': search_id,
+                'title': title,
+                'description': description
+            }
+        ))
+    
+    if points:
+        try:
+            print(f"Inserting {len(points)} points into Qdrant")
+            client.upsert(collection_name='search_results', points=points)
+        except Exception as e:
+            print(f"Error during upsert: {e}")
+
+
 
 
 from qdrant_client.models import Distance, VectorParams
 
 def init_qdrant_collections():
-    if not client.collection_exists("local_documents"):
+    """if not client.collection_exists("search_results"):
         client.recreate_collection(
-            collection_name="local_documents",
+            collection_name="search_results",
             vectors_config=VectorParams(size=384, distance=Distance.COSINE)
-        )
+        )"""
+    pass
 

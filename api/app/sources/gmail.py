@@ -7,7 +7,7 @@ from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 
 from app.db.session import SessionLocal
-from app.db.models import Email
+from app.models import Email
 from app.vector.embedding import get_embedding
 from app.vector.qdrant_utils import upsert_email_vector
 

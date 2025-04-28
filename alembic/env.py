@@ -11,7 +11,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "a
 
 # Importer la Base SQLAlchemy et les modèles
 from api.app.db.session import Base  # ta Base declarative
-from api.app.db import models  # important pour que Alembic voie les modèles
+from api.app.models import *  # important pour que Alembic voie les modèles
 
 # Config Alembic
 config = context.config
